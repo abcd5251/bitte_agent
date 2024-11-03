@@ -24,7 +24,7 @@ export async function GET() {
 
   const randomBlockchains = blockchains
     .sort(() => 0.5 - Math.random())
-    .slice(0, 3);
+    .slice(0, 8);
 
   return NextResponse.json({ blockchains: randomBlockchains });
 }
