@@ -24,9 +24,9 @@ export async function GET() {
         "x-mb": {
             "account-id": key.accountId,
             assistant: {
-                name: "Your Assistant",
-                description: "An assistant that answers with blockchain information",
-                instructions: "You answer with a list of blockchains. Use the tools to get blockchain information.",
+                name: "Onchain Data Assistant",
+                description: "An assistant that answers with blockchain information, especially for Onchain Data",
+                instructions: "Find the tools that can best answer user question, and use the tools to get the blockchain information to answer their question.",
                 tools: [{ type: "generate-transaction" }]
             },
         },
@@ -390,9 +390,78 @@ export async function GET() {
                         }
                     }
                 }
+            },
+            "/api/tools/get-user-asset": {
+                get: {
+                    summary: "Get user asset value",
+                    description: "Get the total USD value of a user's assets",
+                    operationId: "getUserAsset",
+                    parameters: [
+                        {
+                            name: "address",
+                            in: "query",
+                            description: "The wallet address to check",
+                            required: true,
+                            schema: {
+                                type: "string"
+                            }
+                        }
+                    ],
+                    responses: {
+                        "200": {
+                            description: "Successful response",
+                            content: {
+                                "application/json": {
+                                    schema: {
+                                        type: "object",
+                                        properties: {
+                                            usdValue: {
+                                                type: "number",
+                                                description: "Total USD value of user's assets"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "400": {
+                            description: "Bad request",
+                            content: {
+                                "application/json": {
+                                    schema: {
+                                        type: "object",
+                                        properties: {
+                                            error: {
+                                                type: "string",
+                                                description: "Error message"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "500": {
+                            description: "Server error",
+                            content: {
+                                "application/json": {
+                                    schema: {
+                                        type: "object",
+                                        properties: {
+                                            error: {
+                                                type: "string",
+                                                description: "Error message"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
     };
-
+    console.log("cccc")
+    console.log(pluginData)
     return NextResponse.json(pluginData);
 }
